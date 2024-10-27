@@ -30,7 +30,7 @@ The component will not assign a date value until a specific date is selected in 
 <h3 id="props">Props</h3>
 
 | Prop                     | Type                                          | Description                                                   |
-| :----------------------- | :-------------------------------------------- | :------------------------------------------------------------ |
+|:-------------------------|:----------------------------------------------|:--------------------------------------------------------------|
 | `value`                  | Date \| null                                  | Date value                                                    |
 | `min`                    | Date                                          | The earliest value the user can select                        |
 | `max`                    | Date                                          | The latest value the user can select                          |
@@ -46,13 +46,15 @@ The component will not assign a date value until a specific date is selected in 
 | `browseWithoutSelecting` | bool                                          | Wait with updating the date until a value is selected         |
 | `dynamicPositioning`     | bool                                          | Dynamically postions the date popup to best fit on the screen |
 | `locale`                 | Locale                                        | Locale object for internationalization                        |
+| `class`                  | string                                        | CSS class added to the outer container                        |
+| `inputClass`             | string   (default "date-time-field-input")    | CSS class added to the input element                          |
 
 <h4 id="format-string">Format string</h4>
 
 Example format string: `yyyy-MM-dd HH:mm:ss`
 
 | Pattern | Result example |
-| :------ | :------------- |
+|:--------|:---------------|
 | `yyyy`  | 2021           |
 | `yy`    | 21             |
 | `MM`    | 12             |
@@ -69,7 +71,7 @@ The component will not assign a date value until a specific date is selected in 
 <h3 id="datepicker-props">Props</h3>
 
 | Prop                     | Type                                          | Description                                          |
-| :----------------------- | :-------------------------------------------- | :--------------------------------------------------- |
+|:-------------------------|:----------------------------------------------|:-----------------------------------------------------|
 | `value`                  | Date \| null                                  | Date value                                           |
 | `min`                    | Date                                          | The earliest year the user can select                |
 | `max`                    | Date                                          | The latest year the user can select                  |
@@ -84,17 +86,19 @@ The component will not assign a date value until a specific date is selected in 
 Object to support internationalization. Properties (all are optional):
 
 - `weekdays`: Array of weekdays in short form, Sunday to Monday. Default: `['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']`
-- `months`: Array of month names, January to December. Default: `['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']`
+- `months`: Array of month names, January to December. Default:
+  `['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']`
 - `weekStartsOn`: The day the week starts on, 0 = Sunday. Default: `1`
 
 <h3 id="localefromdatefnslocale">`localeFromDateFnsLocale`</h3>
 
-If you use [date-fns](https://date-fns.org/), you can create a Locale object by passing a date-fns locale to this function:
+If you use [date-fns](https://date-fns.org/), you can create a Locale object by passing a date-fns locale to this
+function:
 
 ```js
 <script>
-	import { DatePicker, localeFromDateFnsLocale } from 'date-picker-svelte'
-	import { hy } from 'date-fns/locale'
+	import {DatePicker, localeFromDateFnsLocale} from 'date-picker-svelte'
+	import {hy} from 'date-fns/locale'
 	let date = new Date()
 	let locale = localeFromDateFnsLocale(hy)
 </script>
@@ -121,8 +125,8 @@ Dark theme example:
 
 ```css
 :root {
-	--date-picker-background: #1b1e27;
-	--date-picker-foreground: #f7f7f7;
+    --date-picker-background: #1b1e27;
+    --date-picker-foreground: #f7f7f7;
 }
 ```
 
@@ -132,6 +136,31 @@ You can always use [:global()](https://svelte.dev/docs/svelte-components#style) 
 
 ```css
 :global(.date-time-picker) {
-	width: 16rem;
+    width: 16rem;
 }
+```
+
+<h2 id="custom-css">Custom input class</h2>
+
+If you want to style the input field, you can use the `inputClass` prop. By default, it is set to
+`date-time-field-input` which will apply the default styles. You can either style the input from scratch by specifying a
+new class or tweak the default css by adding one: `date-time-field-input my-custom-class`.
+
+```sveltehtml
+<script lang="ts">
+  import {DateInput, DATE_INPUT_DEFAULT_CSS} from 'date-picker-svelte';
+</script>
+
+<!-- Apply default styles and tweak -->
+<DateInput inputClass="{DATE_INPUT_DEFAULT_CSS} tweak" />
+
+<!-- Style from scratch -->
+<DateInput inputClass="from-scratch" />
+
+<style>
+  /* Add error styles by selecting the aria-invalid attribute */
+  .from-scratch[aria-invalid="true"] {
+    border-color: red;
+  }
+</style>
 ```

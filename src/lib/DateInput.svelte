@@ -7,6 +7,7 @@
 	import DateTimePicker from './DatePicker.svelte'
 	import { writable } from 'svelte/store'
 	import { createEventDispatcher } from 'svelte'
+	import { DATE_INPUT_DEFAULT_CSS } from './index'
 
 	const dispatch = createEventDispatcher<{
 		/** Fires when the user selects a new value in the DatePicker by clicking on a date or by pressing enter */
@@ -55,6 +56,7 @@
 	/** Pass custom classes */
 	let classes = ''
 	export { classes as class }
+	export let inputClass = DATE_INPUT_DEFAULT_CSS;
 
 	/** Locale object for internationalization */
 	export let locale: Locale = {}
@@ -187,8 +189,9 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="date-time-field {classes}" on:focusout={onFocusOut} on:keydown={keydown}>
 	<input
+		class={inputClass}
 		bind:this={InputElement}
-		class:invalid={!valid}
+		aria-invalid={!valid}
 		type="text"
 		autocomplete="off"
 		value={text}
@@ -241,9 +244,9 @@
 </div>
 
 <style lang="sass">
-	.date-time-field
+	:global(.date-time-field)
 		position: relative
-	input
+	:global(.date-time-field-input)
 		color: var(--date-picker-foreground, #000000)
 		background: var(--date-picker-background, #ffffff)
 		min-width: 0px
@@ -260,7 +263,7 @@
 			box-shadow: 0px 0px 0px 2px var(--date-picker-highlight-shadow, rgba(#0269f7, 0.4))
 		&:disabled
 			opacity: 0.5
-	.invalid
+	:global(.date-time-field-input[aria-invalid="true"])
 		border: 1px solid rgba(#f92f72, 0.5)
 		background-color: rgba(#f92f72, 0.1)
 		&:focus
